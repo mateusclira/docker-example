@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  laravel:
+    build:
+      context: ./laravel
+      dockerfile: Dockerfile.prod
+    image: mateusclira/laravel:prod
+    container_name: laravel
+    networks:
+      - laranet
+  
+  nginx:
+    build:
+      context: ./laravel
+      dockerfile: Dockerfile.prod
+    image: mateusclira/nginx:prod
+    container_name: nginx
+    ports:
+      - "8080:80"
+    networks:
+      - laranet
+    depends_on:
+      - laravel
+
+networks:
+  laranet:
+    driver: bridge
